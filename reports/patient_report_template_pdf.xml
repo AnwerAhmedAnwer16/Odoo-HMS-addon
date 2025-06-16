@@ -1,0 +1,15 @@
+<odoo>
+  <template id="report_patient_document">
+    <t t-call="web.basic_layout">
+      <div class="page">
+        <h2>Patient Report</h2>
+        <p><strong>First Name:</strong> <t t-esc="doc.fname"/></p>
+        <p><strong>Last Name:</strong> <t t-esc="doc.lname"/></p>
+        <p><strong>Birth Date:</strong> <t t-esc="doc.bdate"/></p>
+        <p><strong>Blood Type:</strong> <t t-esc="doc.blood_type"/></p>
+        <p><strong>History:</strong></p>
+        <div t-raw="doc.history"/>
+      </div>
+    </t>
+  </template>
+</odoo>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="action_report_patient_details"      model="hms.patient"                     string="Patient Details PDF"            report_type="qweb-pdf"                  name="hms.report_patient_document"      file="hms.report_patient_document"      print_report_name="'Patient - %s' % object.fname" />
+
+        <template id="report_patient_document">
+            <t t-call="web.html_container"> <t t-foreach="docs" t-as="o"> <t t-call="web.external_layout"> <div class="page">
+                            <h2>Patient Details: <span t-field="o.fname"/> <span t-field="o.lname"/></h2>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <strong>Email:</strong> <span t-field="o.email"/><br/>
+                                    <strong>Date of Birth:</strong> <span t-field="o.bdate"/><br/>
+                                    <strong>Age:</strong> <span t-field="o.age"/><br/>
+                                    <strong>Blood Type:</strong> <span t-field="o.blood_type"/><br/>
+                                    <strong>PCR:</strong> <span t-field="o.pcr"/><br/>
+                                    <strong>CR Ratio:</strong> <span t-field="o.cr_ratio"/><br/>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <img t-if="o.image" t-att-src="image_data_uri(o.image)" style="max-width: 150px; max-height: 150px; border-radius: 50%; object-fit: cover;"/><br/>
+                                    <br/>
+                                    <strong>Current State:</strong> <span t-field="o.state"/><br/>
+                                </div>
+                            </div>
+                            <br/>
+                            <strong>Department:</strong> <span t-field="o.department_id.name"/><br/>
+                            <br/>
+                            <strong>Doctors:</strong>
+                            <ul>
+                                <li t-foreach="o.doctor_ids" t-as="doctor">
+                                    <span t-field="doctor.fname"/> <span t-field="doctor.lname"/>
+                                </li>
+                            </ul>
+                            <br/>
+                            <strong>Address:</strong>
+                            <p t-field="o.address"/>
+                            <br/>
+                            <strong>Medical History:</strong>
+                            <div t-field="o.history"/>
+
+                            <h3>Log History:</h3>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Created At</th>
+                                        <th>Created By</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.log_ids" t-as="log">
+                                        <td><span t-field="log.created_at"/></td>
+                                        <td><span t-field="log.created_by.name"/></td>
+                                        <td><span t-field="log.description"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

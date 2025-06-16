@@ -1,0 +1,1 @@
+from . import doctor, department, log_history, patient, res_partner_inherit

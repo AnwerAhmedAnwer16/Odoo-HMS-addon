@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_patient_tree" model="ir.ui.view">
+    <field name="name">hms.patient.tree</field>
+    <field name="model">hms.patient</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="fname"/>
+            <field name="lname"/>
+            <field name="email"/>
+            <field name="age"/>
+            <field name="department_id"/>
+            <field name="state"/>
+            <header>
+                <button name="export_to_excel" string="Export Excel" type="object" class="btn-primary"/>
+            </header>
+        </tree>
+    </field>
+</record>
+
+<record id="view_patient_form" model="ir.ui.view">
+    <field name="name">hms.patient.form</field>
+    <field name="model">hms.patient</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="fname"/>
+                    <field name="lname"/>
+                    <field name="email"/>
+                    <field name="age"/>
+                    <field name="bdate"/>
+                    <field name="blood_type"/>
+                    <field name="pcr"/>
+                    <field name="cr_ratio"/>
+                </group>
+                <group groups="hms.group_hms_admin">
+                    <field name="doctor_ids" widget="many2many_tags"/>
+                    <field name="department_id"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+    <record id="view_form_patient" model="ir.ui.view">
+        <field name="name">hms.patient.form</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="undetermined,good,fair,serious"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="fname" placeholder="First Name" required="1"/>
+                            <field name="lname" placeholder="Last Name" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="General Information">
+                            <group>
+                                <group>
+                                    <field name="email"/>
+                                    <field name="bdate"/>
+                                    <field name="age"/>
+                                    <field name="blood_type"/>
+                                    <field name="pcr"/>
+                                    <field name="cr_ratio" required="pcr"/>
+                                </group>
+                                <group>
+                                    <field name="department_id"/>
+                                    <field name="address"/>
+                                </group>
+                            </group>
+                            <group string="Medical History">
+                                <field name="history" widget="html"/>
+                            </group>
+                        </page>
+                        <page string="Doctors">
+                            <field name="doctor_ids">
+                                <tree>
+                                    <field name="fname"/>
+                                    <field name="lname"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Log History">
+                            <field name="log_ids">
+                                <tree>
+                                    <field name="created_at"/>
+                                    <field name="created_by"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_patient" model="ir.ui.view">
+        <field name="name">hms.patient.tree</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fname"/>
+                <field name="lname"/>
+                <field name="age"/>
+                <field name="blood_type"/>
+                <field name="department_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_search_patient" model="ir.ui.view">
+        <field name="name">hms.patient.search</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="fname"/>
+                <field name="lname"/>
+                <field name="department_id"/>
+                <field name="blood_type"/>
+                <filter string="PCR Positive" name="pcr_positive" domain="[('pcr', '=', True)]"/>
+                <filter string="Good State" name="good_state" domain="[('state', '=', 'good')]"/>
+                <filter string="Serious State" name="serious_state" domain="[('state', '=', 'serious')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Blood Type" name="group_blood_type" context="{'group_by': 'blood_type'}"/>
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_form_department" model="ir.ui.view">
+        <field name="name">hms.department.form</field>
+        <field name="model">hms.department</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="capacity"/>
+                        <field name="is_opened"/>
+                    </group>
+                    <notebook>
+                        <page string="Patients">
+                            <field name="patient_ids">
+                                <tree>
+                                    <field name="fname"/>
+                                    <field name="lname"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_department" model="ir.ui.view">
+        <field name="name">hms.department.tree</field>
+        <field name="model">hms.department</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="capacity"/>
+                <field name="is_opened"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_doctor" model="ir.ui.view">
+        <field name="name">hms.doctor.form</field>
+        <field name="model">hms.doctor</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="fname" placeholder="First Name"/>
+                            <field name="lname" placeholder="Last Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                    </group>
+                    <notebook>
+                        <page string="Patients">
+                            <field name="patient_ids">
+                                <tree>
+                                    <field name="fname"/>
+                                    <field name="lname"/>
+                                    <field name="state"/>
+                                    <field name="department_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_doctor" model="ir.ui.view">
+        <field name="name">hms.doctor.tree</field>
+        <field name="model">hms.doctor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fname"/>
+                <field name="lname"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_form_log" model="ir.ui.view">
+        <field name="name">hms.log.form</field>
+
+        <field name="model">hms.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                        <field name="created_by"/>
+                        <field name="created_at"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tree_log" model="ir.ui.view">
+        <field name="name">hms.log.tree</field>
+        <field name="model">hms.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_id"/>
+                <field name="created_at"/>
+                <field name="created_by"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">hms.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first patient!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_department" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="res_model">hms.department</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_doctor" model="ir.actions.act_window">
+        <field name="name">Doctors</field>
+        <field name="res_model">hms.doctor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_log" model="ir.actions.act_window">
+        <field name="name">Patient Logs</field>
+        <field name="res_model">hms.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hms_root" name="HMS" sequence="10"/>
+
+    <menuitem id="menu_hms_patients"
+              name="Patients"
+              parent="menu_hms_root"
+              action="action_patient"
+              sequence="10"/>
+
+    <menuitem id="menu_hms_doctors"
+              name="Doctors"
+              parent="menu_hms_root"
+              action="action_doctor"
+              sequence="20"/>
+
+    <menuitem id="menu_hms_departments"
+              name="Departments"
+              parent="menu_hms_root"
+              action="action_department"
+              sequence="30"/>
+
+    <menuitem id="menu_hms_logs"
+              name="Patient Logs"
+              parent="menu_hms_root"
+              action="action_log"
+              sequence="40"/>
+
+</odoo>
