@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!-- User Group -->
         <record id="group_hms_user" model="res.groups">
             <field name="name">HMS User</field>
             <field name="category_id" ref="base.module_category_services_healthcare"/>
         </record>
 
-        <!-- Admin Group -->
         <record id="group_hms_admin" model="res.groups">
             <field name="name">HMS Admin</field>
             <field name="category_id" ref="base.module_category_services_healthcare"/>
